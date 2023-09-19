@@ -71,8 +71,8 @@ configure:3408: checking host system type
 configure:3421: result: x86_64-pc-linux-gnu
 configure:3445: checking whether make supports the include directive
 configure:3460: make -f confmf.GNU && cat confinc.out
-make[1]: Entering directory '/home/mafiosso/devel/sources/libpst2'
-make[1]: Leaving directory '/home/mafiosso/devel/sources/libpst2'
+make[3]: Entering directory '/home/mafiosso/devel/sources/libpst2'
+make[3]: Leaving directory '/home/mafiosso/devel/sources/libpst2'
 this is the am__doit target
 configure:3463: $? = 0
 configure:3482: result: yes (GNU style)
@@ -986,7 +986,7 @@ configure:13499: checking for wchar.h
 configure:13499: result: yes
 configure:13510: checking for library containing sem_init
 configure:13541: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccgBR48g.o: in function `main':
+/usr/bin/ld: /tmp/ccIfIopl.o: in function `main':
 /home/mafiosso/devel/sources/libpst2/conftest.c:63: undefined reference to `sem_init'
 collect2: error: ld returned 1 exit status
 configure:13541: $? = 1
@@ -1769,7 +1769,7 @@ configure:14889: $? = 0
 configure:14889: result: yes
 configure:14895: checking for _doprnt
 configure:14895: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/cc1sBjm5.o: in function `main':
+/usr/bin/ld: /tmp/ccLiw633.o: in function `main':
 /home/mafiosso/devel/sources/libpst2/conftest.c:108: undefined reference to `_doprnt'
 collect2: error: ld returned 1 exit status
 configure:14895: $? = 1
@@ -2097,7 +2097,7 @@ conftest.c:105:1: warning: null argument where non-null required (argument 1) [-
 conftest.c:106:12: warning: null argument where non-null required (argument 1) [-Wnonnull]
   106 |            pthread_mutexattr_init((pthread_mutexattr_t*)0);
       |            ^~~~~~~~~~~~~~~~~~~~~~
-/usr/bin/ld: /tmp/ccCPiots.o: in function `main':
+/usr/bin/ld: /tmp/cckMUxV5.o: in function `main':
 /home/mafiosso/devel/sources/libpst2/conftest.c:106: undefined reference to `pthread_mutexattr_init'
 collect2: error: ld returned 1 exit status
 configure:16351: $? = 1
@@ -4557,12 +4557,12 @@ config.status:1389: creating config.h
 config.status:1570: config.h is unchanged
 config.status:1618: executing depfiles commands
 config.status:1695: cd src       && sed -e '/# am--include-marker/d' Makefile         | make -f - am--depfiles
-make[1]: Entering directory '/home/mafiosso/devel/sources/libpst2/src'
-make[1]: Leaving directory '/home/mafiosso/devel/sources/libpst2/src'
+make[3]: Entering directory '/home/mafiosso/devel/sources/libpst2/src'
+make[3]: Leaving directory '/home/mafiosso/devel/sources/libpst2/src'
 config.status:1700: $? = 0
 config.status:1695: cd python       && sed -e '/# am--include-marker/d' Makefile         | make -f - am--depfiles
-make[1]: Entering directory '/home/mafiosso/devel/sources/libpst2/python'
-make[1]: Leaving directory '/home/mafiosso/devel/sources/libpst2/python'
+make[3]: Entering directory '/home/mafiosso/devel/sources/libpst2/python'
+make[3]: Leaving directory '/home/mafiosso/devel/sources/libpst2/python'
 config.status:1700: $? = 0
 config.status:1618: executing libtool commands
 config.status:1618: executing po-directories commands
