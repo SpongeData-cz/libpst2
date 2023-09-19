@@ -1,0 +1,11 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libpst
+Description: A library for reading PST files
+Version: 0.6.76
+Requires:
+Libs: -L${libdir} -lpst
+Cflags: -I${includedir}/libpst-4
