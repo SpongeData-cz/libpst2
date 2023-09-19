@@ -305,50 +305,6 @@ if test "$enable_static_tools" = "yes"; then
 	enable_static="yes"
 fi
 
-
-# The following lines adds the --enable-python option to configure:
-#
-# Give the user the choice to enter one of these:
-# --enable-python
-# --enable-python=yes
-# --enable-python=no
-#
-AC_MSG_CHECKING([whether to build the libpst python interface])
-AC_ARG_ENABLE([python],
-    AC_HELP_STRING([--enable-python], [build libpst python interface]),
-    [
-        case "${enableval}" in
-          yes) ;;
-          no)  ;;
-          *)   AC_MSG_ERROR(bad value ${enableval} for --python) ;;
-        esac
-    ],
-    [
-        enable_python=yes
-    ])
-AC_MSG_RESULT([$enable_python])
-AM_CONDITIONAL(PYTHON_INTERFACE, [test "$enable_python" = "yes"])
-if test "$enable_python" = "yes"; then
-	enable_shared="yes"
-    # get the version of installed python
-    AX_PYTHON
-    if test "$ax_python_bin" = "no"; then
-        AC_MSG_ERROR(python binary not found)
-    fi
-    PYTHON_VERSION=`echo $ax_python_bin | cut -c7-`
-
-    # find the flags for that version
-    AX_PYTHON_DEVEL([$PYTHON_VERSION])
-
-    # do we have Boost Python?
-    AX_BOOST_PYTHON
-    if test "$ac_cv_boost_python" = "no"; then
-        AC_MSG_ERROR(Boost Python not found)
-    fi
-    AC_SUBST(PYTHON_VERSION, [$ax_python_bin])
-fi
-
-
 # The following lines adds the --enable-profiling option to configure:
 #
 # Give the user the choice to enter one of these:

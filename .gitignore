@@ -2,7 +2,6 @@
 *.d
 
 # Aclocal
-*.in
 
 # Object files
 *.o

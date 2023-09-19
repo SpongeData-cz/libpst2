@@ -6,6 +6,8 @@
 
 ## Build Process
 ```bash
+automake --add-missing
+autoconf
 ./configure
 make
 su

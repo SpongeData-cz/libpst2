@@ -89,15 +89,12 @@ build_triplet = x86_64-pc-linux-gnu
 host_triplet = x86_64-pc-linux-gnu
 subdir = xml
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/ax_boost_base.m4 \
-	$(top_srcdir)/m4/ax_boost_python.m4 \
-	$(top_srcdir)/m4/ax_python.m4 \
-	$(top_srcdir)/m4/ax_python_devel.m4 \
-	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/glibc2.m4 $(top_srcdir)/m4/glibc21.m4 \
-	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intdiv0.m4 \
-	$(top_srcdir)/m4/intl.m4 $(top_srcdir)/m4/intlmacosx.m4 \
-	$(top_srcdir)/m4/intmax.m4 $(top_srcdir)/m4/inttypes-pri.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/glibc2.m4 \
+	$(top_srcdir)/m4/glibc21.m4 $(top_srcdir)/m4/iconv.m4 \
+	$(top_srcdir)/m4/intdiv0.m4 $(top_srcdir)/m4/intl.m4 \
+	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intmax.m4 \
+	$(top_srcdir)/m4/inttypes-pri.m4 \
 	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/lcmessage.m4 \
 	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
 	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
@@ -148,9 +145,6 @@ AUTOCONF = ${SHELL} /home/mafiosso/devel/sources/libpst2/missing autoconf
 AUTOHEADER = ${SHELL} /home/mafiosso/devel/sources/libpst2/missing autoheader
 AUTOMAKE = ${SHELL} /home/mafiosso/devel/sources/libpst2/missing automake-1.16
 AWK = gawk
-BOOST_CPPFLAGS = -I/usr/include
-BOOST_LDFLAGS = -L/usr/lib/x86_64-linux-gnu
-BOOST_PYTHON_LIB = 
 BUILD_INCLUDED_LIBINTL = no
 CATOBJEXT = .gmo
 CC = gcc
@@ -251,16 +245,6 @@ PKG_CONFIG_PATH =
 POSUB = po
 PRI_MACROS_BROKEN = 0
 PST_OBJDIR = .libs
-PYTHON = /usr/bin/python3.8
-PYTHON_BIN = python3.8
-PYTHON_CPPFLAGS = -I/usr/include/python3.8
-PYTHON_EXTRA_LDFLAGS = -Xlinker -export-dynamic -Wl,-O1 -Wl,-Bsymbolic-functions
-PYTHON_EXTRA_LIBS = -lcrypt -lpthread -ldl  -lutil -lm -lm
-PYTHON_INCLUDE_DIR = /usr/include/python3.8
-PYTHON_LIB = python3.8
-PYTHON_LIBS = -L/usr/lib -lpython3.8
-PYTHON_SITE_PKG = /usr/lib/python3/dist-packages
-PYTHON_VERSION = python3.8
 RANLIB = ranlib
 REGEXLIB = 
 SED = /usr/bin/sed

@@ -1,6 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = src python man html
+README: README.md
+
+SUBDIRS = src man
 htmldir = ${datadir}/doc/@PACKAGE@-@VERSION@
 html_DATA = AUTHORS COPYING ChangeLog NEWS README
 CLEANFILES = xml/libpst xml/Makefile
