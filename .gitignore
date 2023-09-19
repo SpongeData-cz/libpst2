@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 
+# Aclocal
+*.in
+
 # Object files
 *.o
 *.ko
