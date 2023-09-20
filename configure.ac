@@ -7,6 +7,12 @@ AM_INIT_AUTOMAKE
 AC_CANONICAL_HOST
 AC_USE_SYSTEM_EXTENSIONS
 
+LT_INIT
+
+AC_ENABLE_SHARED
+AC_DISABLE_STATIC
+AC_PROG_LIBTOOL(libtool)
+
 #
 #  1. Remember that version-info is current:revision:age, and age <= current.
 #  2. If the source code has changed at all since the last public release,
@@ -269,11 +275,8 @@ AC_ARG_ENABLE(libpst-shared,
     enable_libpst_shared=no
     )
 AC_MSG_RESULT([$enable_libpst_shared])
-enable_static_tools=yes
-if test "$enable_libpst_shared" = "yes"; then
-    enable_shared=yes
-    enable_static_tools=no
-fi
+enable_static_tools=no
+enable_shared=yes
 
 # needed by STATIC_TOOLS in src/Makefile.am
 AC_SUBST(PST_OBJDIR, [$objdir])
@@ -347,3 +350,4 @@ AC_OUTPUT(                  \
     xml/Makefile            \
     xml/libpst              \
     )
+
