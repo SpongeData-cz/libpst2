@@ -344,7 +344,6 @@ AC_OUTPUT(                  \
     libpst.spec             \
     man/Makefile            \
     src/Makefile            \
-    src/pst2dii.cpp         \
     xml/Makefile            \
     xml/libpst              \
     )
