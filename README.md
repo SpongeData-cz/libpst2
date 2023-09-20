@@ -15,12 +15,16 @@ make install
 ```
 
 ## Vision
-  * Use libpst as code base.
-  * Code cleanup. Get rid of Python support - the binding should be implemented in another repo.
-  * Make API calls reentrant/thread safe.
-  * Get rid of single purpose binaries (readpst, lspst, ...).
-  * Make programmable abstraction over original binaries' functionality.
-  * Make API integrable to other languages.
+  - [x] Use libpst as code base.
+  - [x] Code cleanup. Get rid of Python support - the binding should be implemented in another repo.
+  - [ ] Make API calls reentrant/thread safe.
+  - [ ] Get rid of single purpose binaries (readpst, lspst, ...).
+  - [ ] Make programmable abstraction over original binaries' functionality.
+  - [ ] Make API integrable to other languages.
+  - [ ] Redefine old single purpose binaries to support NDJSON format on input/output.
+  - [ ] Allow streaming of records from pst and parallell export.
+
+
 
 
 
