@@ -183,7 +183,6 @@ CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CFLAG_VISIBILITY = -fvisibility=hidden
-CONVERT = /usr/bin/convert
 CPP = gcc -E
 CPPFLAGS = 
 CXX = g++

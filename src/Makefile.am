@@ -1,14 +1,3 @@
-if PLATFORM_WIN32
-    NO_UNDEFINED = -no-undefined
-else
-    NO_UNDEFINED =
-endif
-
-
-if OS_SOLARIS
-    AM_CFLAGS = -D_POSIX_PTHREAD_SEMANTICS
-endif
-
 PSTLIB = libpst.la
 
 common_header = common.h        \
