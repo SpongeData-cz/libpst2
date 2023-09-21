@@ -1,5 +1,5 @@
 AC_PREREQ(2.60)
-AC_INIT(libpst,0.6.76,carl@five-ten-sg.com)
+AC_INIT(libpst,1.0.0,pavel.prochazka@spongedata.cz)
 AC_CONFIG_SRCDIR([src/libpst.c])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -27,10 +27,135 @@ AC_PROG_LIBTOOL(libtool)
 #  6. libtool will build libpst.so.x.y.z where the SONAME is libpst.so.x
 #     and x=current-age, y=age, z=revision
 
-libpst_version_info='5:18:1'
+libpst_version_info='6:1:1'
 AC_SUBST(LIBPST_VERSION_INFO, [$libpst_version_info])
-libpst_so_major='4'
+libpst_so_major='5'
 AC_SUBST(LIBPST_SO_MAJOR, [$libpst_so_major])
+
+# libpst
+# version   soname          so library name
+# 0.6.35    libpst.so.2     libpst.so.2.0.0
+# 0.6.37    libpst.so.2     libpst.so.2.1.0
+# 0.6.38    libpst.so.2     libpst.so.2.1.0
+# 0.6.40    libpst.so.4     libpst.so.4.0.0
+# 0.6.43    libpst.so.4     libpst.so.4.0.1
+# 0.6.47    libpst.so.4     libpst.so.4.0.2
+# 0.6.48    libpst.so.4     libpst.so.4.0.3
+# 0.6.49    libpst.so.4     libpst.so.4.0.4
+# 0.6.50    libpst.so.4     libpst.so.4.1.0
+# 0.6.51    libpst.so.4     libpst.so.4.1.1
+# 0.6.52    libpst.so.4     libpst.so.4.1.2
+# 0.6.53    libpst.so.4     libpst.so.4.1.3
+# 0.6.54    libpst.so.4     libpst.so.4.1.4
+# 0.6.55    libpst.so.4     libpst.so.4.1.5
+# 0.6.56    libpst.so.4     libpst.so.4.1.6
+# 0.6.57    libpst.so.4     libpst.so.4.1.6
+# 0.6.58    libpst.so.4     libpst.so.4.1.7
+# 0.6.59    libpst.so.4     libpst.so.4.1.8
+# 0.6.60    libpst.so.4     libpst.so.4.1.9
+# 0.6.61    libpst.so.4     libpst.so.4.1.9
+# 0.6.62    libpst.so.4     libpst.so.4.1.9
+# 0.6.63    libpst.so.4     libpst.so.4.1.10
+# 0.6.66    libpst.so.4     libpst.so.4.1.11
+# 0.6.67    libpst.so.4     libpst.so.4.1.12
+# 0.6.68    libpst.so.4     libpst.so.4.1.13
+# 0.6.69    libpst.so.4     libpst.so.4.1.14
+# 0.6.73    libpst.so.4     libpst.so.4.1.15
+# 0.6.74    libpst.so.4     libpst.so.4.1.16
+# 0.6.75    libpst.so.4     libpst.so.4.1.17
+# 0.6.76    libpst.so.4     libpst.so.4.1.18
+# 0.7.1     libpst.so.5     libpst.so.5.1.1
+
+
+# Check for solaris
+AC_MSG_CHECKING([for Solaris])
+case "$host" in
+    *solaris*)
+        os_solaris=yes
+        ;;
+    *)
+        os_solaris=no
+        ;;
+esac
+AC_MSG_RESULT($os_solaris)
+AM_CONDITIONAL(OS_SOLARIS, [test "$os_solaris" = "yes"])
+
+
+# Check for win32
+AC_MSG_CHECKING([for Win32])
+case "$host" in
+    *-mingw*)
+        os_win32=yes
+        ;;
+    *)
+        os_win32=no
+        ;;
+esac
+AC_MSG_RESULT($os_win32)
+AM_CONDITIONAL(OS_WIN32, [test "$os_win32" = "yes"])
+
+
+# Check for Win32 platform
+AC_MSG_CHECKING([for Win32 platform in general])
+case "$host" in
+    *-cygwin*)
+        platform_win32=yes
+        ;;
+    *)
+        platform_win32=$os_win32
+        ;;
+esac
+AC_MSG_RESULT($platform_win32)
+AM_CONDITIONAL(PLATFORM_WIN32, [test "$platform_win32" = "yes"])
+
+
+# Checks for programs.
+# The following lines adds the --enable-dii option to configure:
+#
+# Give the user the choice to enter one of these:
+# --enable-dii
+# --enable-dii=yes
+# --enable-dii=no
+#
+AC_MSG_CHECKING([whether we are enabling dii utility])
+AC_ARG_ENABLE(dii,
+    AC_HELP_STRING([--enable-dii], [enable dii utility]),
+    [
+        case "${enableval}" in
+          yes) ;;
+          no)  ;;
+          *)   AC_MSG_ERROR(bad value ${enableval} for --enable-dii) ;;
+        esac
+    ],
+    # default if not specified
+    enable_dii=yes
+    )
+AC_MSG_RESULT([$enable_dii])
+AC_PATH_PROG(CONVERT, convert)
+if test "x$CONVERT" = "x" ; then
+    if test "$enable_dii" = "yes"; then
+        enable_dii=no
+        AC_MSG_WARN([convert program not found. pst2dii disabled])
+    fi
+else
+    if test "x`$CONVERT --version 2>&1 | grep -i imagemagick >/dev/null ; echo $?`" != "x0"; then
+        if test "$enable_dii" = "yes"; then
+            enable_dii=no
+            AC_MSG_WARN([wrong convert program found. pst2dii disabled])
+        fi
+    fi
+fi
+AC_CHECK_HEADER([gd.h],
+                [
+                    AC_DEFINE([HAVE_GD_H], [1], [Define to 1 if you have the <gd.h> header file.])
+                ],
+                [
+                    if test "$enable_dii" = "yes"; then
+                        enable_dii=no
+                        AC_MSG_WARN([gd.h not found. pst2dii disabled])
+                    fi
+                ])
+AM_CONDITIONAL(BUILD_DII, [test "$enable_dii" = "yes"])
 
 
 # Checks for programs.
@@ -80,6 +205,11 @@ AC_FUNC_FSEEKO
 AC_FUNC_STAT
 AC_FUNC_LSTAT
 AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
+if test "$cross_compiling" != "yes"; then
+    AC_FUNC_MALLOC
+    AC_FUNC_MKTIME
+    AC_FUNC_REALLOC
+fi
 AC_FUNC_STRFTIME
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([chdir getcwd memchr memmove memset regcomp strcasecmp strncasecmp strchr strdup strerror strpbrk strrchr strstr strtol get_current_dir_name])

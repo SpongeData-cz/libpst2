@@ -3,9 +3,9 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-Name: libpst
+Name: libpst2
 Description: A library for reading PST files
-Version: 0.6.76
+Version: 1.0.0
 Requires:
 Libs: -L${libdir} -lpst
-Cflags: -I${includedir}/libpst-4
+Cflags: -I${includedir}/libpst2-5

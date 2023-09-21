@@ -1,15 +1,6 @@
 
 #include "define.h"
 
-static int unicode_up = 0;
-static iconv_t i16to8;
-static const char *target_charset = NULL;
-static int         target_open_from = 0;
-static int         target_open_to   = 0;
-static iconv_t     i8totarget = (iconv_t)-1;
-static iconv_t     target2i8  = (iconv_t)-1;
-
-
 #define ASSERT(x,...) { if( !(x) ) DIE(( __VA_ARGS__)); }
 
 
@@ -37,33 +28,31 @@ static size_t pst_vbavail(pst_vbuf * vb)
     return vb->blen  - vb->dlen - (size_t)(vb->b - vb->buf);
 }
 
-
-static void open_targets(const char* charset);
-static void open_targets(const char* charset)
+// REFACTORED:
+static void open_targets(pst_vbuf_context ctx, const char* charset)
 {
-    if (!target_charset || strcasecmp(target_charset, charset)) {
-        if (target_open_from) iconv_close(i8totarget);
-        if (target_open_to)   iconv_close(target2i8);
-        if (target_charset)   free((char *)target_charset);
-        target_charset   = strdup(charset);
-        target_open_from = 1;
-        target_open_to   = 1;
-        i8totarget = iconv_open(target_charset, "utf-8");
-        if (i8totarget == (iconv_t)-1) {
-            target_open_from = 0;
-            DEBUG_WARN(("Couldn't open iconv descriptor for utf-8 to %s.\n", target_charset));
+    if (!ctx.target_charset || strcasecmp(ctx.target_charset, charset)) {
+        if (ctx.target_open_from) iconv_close(ctx.i8totarget);
+        if (ctx.target_open_to)   iconv_close(ctx.target2i8);
+        if (ctx.target_charset)   free((char *)ctx.target_charset);
+        ctx.target_charset   = strdup(charset);
+        ctx.target_open_from = 1;
+        ctx.target_open_to   = 1;
+        ctx.i8totarget = iconv_open(ctx.target_charset, "utf-8");
+        if (ctx.i8totarget == (iconv_t)-1) {
+            ctx.target_open_from = 0;
+            DEBUG_WARN(("Couldn't open iconv descriptor for utf-8 to %s.\n", ctx.target_charset));
         }
-        target2i8 = iconv_open("utf-8", target_charset);
-        if (target2i8 == (iconv_t)-1) {
-            target_open_to = 0;
-            DEBUG_WARN(("Couldn't open iconv descriptor for %s to utf-8.\n", target_charset));
+        ctx.target2i8 = iconv_open("utf-8", ctx.target_charset);
+        if (ctx.target2i8 == (iconv_t)-1) {
+            ctx.target_open_to = 0;
+            DEBUG_WARN(("Couldn't open iconv descriptor for %s to utf-8.\n", ctx.target_charset));
         }
     }
 }
 
 
-static size_t sbcs_conversion(pst_vbuf *dest, const char *inbuf, int iblen, iconv_t conversion);
-static size_t sbcs_conversion(pst_vbuf *dest, const char *inbuf, int iblen, iconv_t conversion)
+static size_t sbcs_conversion(pst_vbuf_context ctx, pst_vbuf *dest, const char *inbuf, int iblen, iconv_t conversion)
 {
     size_t inbytesleft  = iblen;
     size_t icresult     = (size_t)-1;
@@ -85,7 +74,7 @@ static size_t sbcs_conversion(pst_vbuf *dest, const char *inbuf, int iblen, icon
 
     if (icresult == (size_t)-1) {
         DEBUG_WARN(("iconv failure: %s\n", strerror(myerrno)));
-        pst_unicode_init();
+        pst_unicode_init(ctx);
         DEBUG_RET();
         return (size_t)-1;
     }
@@ -94,17 +83,16 @@ static size_t sbcs_conversion(pst_vbuf *dest, const char *inbuf, int iblen, icon
 }
 
 
-static void pst_unicode_close();
-static void pst_unicode_close()
+static void pst_unicode_close(pst_vbuf_context ctx)
 {
-    iconv_close(i16to8);
-    if (target_open_from) iconv_close(i8totarget);
-    if (target_open_to)   iconv_close(target2i8);
-    if (target_charset)   free((char *)target_charset);
-    target_charset   = NULL;
-    target_open_from = 0;
-    target_open_to   = 0;
-    unicode_up = 0;
+    iconv_close(ctx.i16to8);
+    if (ctx.target_open_from) iconv_close(ctx.i8totarget);
+    if (ctx.target_open_to)   iconv_close(ctx.target2i8);
+    if (ctx.target_charset)   free((char *)ctx.target_charset);
+    ctx.target_charset   = NULL;
+    ctx.target_open_from = 0;
+    ctx.target_open_to   = 0;
+    ctx.unicode_up = 0;
 }
 
 
@@ -199,18 +187,18 @@ void pst_vbappend(pst_vbuf *vb, void *b, size_t len)
 }
 
 
-void pst_unicode_init()
+void pst_unicode_init(pst_vbuf_context ctx)
 {
-    if (unicode_up) pst_unicode_close();
-    i16to8 = iconv_open("utf-8", "utf-16le");
-    if (i16to8 == (iconv_t)-1) {
+    if (ctx.unicode_up) pst_unicode_close(ctx);
+    ctx.i16to8 = iconv_open("utf-8", "utf-16le");
+    if (ctx.i16to8 == (iconv_t)-1) {
         DEBUG_WARN(("Couldn't open iconv descriptor for utf-16le to utf-8.\n"));
     }
-    unicode_up = 1;
+    ctx.unicode_up = 1;
 }
 
 
-size_t pst_vb_utf16to8(pst_vbuf *dest, const char *inbuf, int iblen)
+size_t pst_vb_utf16to8(pst_vbuf_context ctx, pst_vbuf *dest, const char *inbuf, int iblen)
 {
     size_t inbytesleft  = iblen;
     size_t icresult     = (size_t)-1;
@@ -218,7 +206,7 @@ size_t pst_vb_utf16to8(pst_vbuf *dest, const char *inbuf, int iblen)
     char *outbuf        = NULL;
     int   myerrno;
 
-    if (!unicode_up) return (size_t)-1;   // failure to open iconv
+    if (!ctx.unicode_up) return (size_t)-1;   // failure to open iconv
     pst_vbresize(dest, iblen);
 
     //Bad Things can happen if a non-zero-terminated utf16 string comes through here
@@ -228,7 +216,7 @@ size_t pst_vb_utf16to8(pst_vbuf *dest, const char *inbuf, int iblen)
     do {
         outbytesleft = dest->blen - dest->dlen;
         outbuf = dest->b + dest->dlen;
-        icresult = iconv(i16to8, (ICONV_CONST char**)&inbuf, &inbytesleft, &outbuf, &outbytesleft);
+        icresult = iconv(ctx.i16to8, (ICONV_CONST char**)&inbuf, &inbytesleft, &outbuf, &outbytesleft);
         myerrno  = errno;
         dest->dlen = outbuf - dest->b;
         if (inbytesleft) pst_vbgrow(dest, inbytesleft);
@@ -236,25 +224,25 @@ size_t pst_vb_utf16to8(pst_vbuf *dest, const char *inbuf, int iblen)
 
     if (icresult == (size_t)-1) {
         DEBUG_WARN(("iconv failure: %s\n", strerror(myerrno)));
-        pst_unicode_init();
+        pst_unicode_init(ctx);
         return (size_t)-1;
     }
     return (icresult) ? (size_t)-1 : 0;
 }
 
 
-size_t pst_vb_utf8to8bit(pst_vbuf *dest, const char *inbuf, int iblen, const char* charset)
+size_t pst_vb_utf8to8bit(pst_vbuf_context ctx, pst_vbuf *dest, const char *inbuf, int iblen, const char* charset)
 {
-    open_targets(charset);
-    if (!target_open_from) return (size_t)-1;   // failure to open the target
-    return sbcs_conversion(dest, inbuf, iblen, i8totarget);
+    open_targets(ctx, charset);
+    if (!ctx.target_open_from) return (size_t)-1;   // failure to open the target
+    return sbcs_conversion(ctx, dest, inbuf, iblen, ctx.i8totarget);
 }
 
 
-size_t pst_vb_8bit2utf8(pst_vbuf *dest, const char *inbuf, int iblen, const char* charset)
+size_t pst_vb_8bit2utf8(pst_vbuf_context ctx, pst_vbuf *dest, const char *inbuf, int iblen, const char* charset)
 {
-    open_targets(charset);
-    if (!target_open_to) return (size_t)-1;     // failure to open the target
-    return sbcs_conversion(dest, inbuf, iblen, target2i8);
+    open_targets(ctx, charset);
+    if (!ctx.target_open_to) return (size_t)-1;     // failure to open the target
+    return sbcs_conversion(ctx, dest, inbuf, iblen, ctx.target2i8);
 }
 

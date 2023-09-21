@@ -11,6 +11,7 @@
 #define __PST_LIBPST_H
 
 #include "common.h"
+#include "vbuf.h"
 
 
 #ifdef __cplusplus
@@ -936,6 +937,8 @@ typedef struct pst_file {
      *  @li 0x15 64 bit Outlook 2003 or later
      *  @li 0x17 64 bit Outlook 2003 or later */
     unsigned char ind_type;
+
+    pst_vbuf_context vbuf_context;
 } pst_file;
 
 

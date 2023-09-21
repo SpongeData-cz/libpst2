@@ -315,7 +315,9 @@ static char *pst_getcwd(void) {
 int pst_open(pst_file *pf, const char *name, const char *charset) {
     int32_t sig;
 
-    pst_unicode_init();
+    pf->vbuf_context = pst_vbuf_context_default;
+
+    pst_unicode_init(pf->vbuf_context);
 
     DEBUG_ENT("pst_open");
 
@@ -1871,7 +1873,7 @@ static pst_mapi_object* pst_parse_block(pst_file *pf, uint64_t block_id, pst_id2
                     pst_vbappend(utf16buf, "\0\0", (size_t)2);
                     DEBUG_INFO(("Iconv in:\n"));
                     DEBUG_HEXDUMPC(utf16buf->b, utf16buf->dlen, 0x10);
-                    rc = pst_vb_utf16to8(utf8buf, utf16buf->b, utf16buf->dlen);
+                    rc = pst_vb_utf16to8(pf->vbuf_context, utf8buf, utf16buf->b, utf16buf->dlen);
                     if (rc == (size_t)-1) {
                         DEBUG_WARN(("Failed to convert utf-16 to utf-8\n"));
                     }
@@ -4564,7 +4566,7 @@ void pst_convert_utf8(pst_item *item, pst_string *str) {
         return;
     }
     pst_vbuf *newer = pst_vballoc(2);
-    size_t rc = pst_vb_8bit2utf8(newer, str->str, strlen(str->str) + 1, charset);
+    size_t rc = pst_vb_8bit2utf8(item->pf->vbuf_context, newer, str->str, strlen(str->str) + 1, charset);
     if (rc == (size_t)-1) {
         free(newer->b);
         DEBUG_WARN(("Failed to convert %s to utf-8 - %s\n", charset, str->str));
