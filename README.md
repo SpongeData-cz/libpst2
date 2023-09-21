@@ -17,7 +17,7 @@ make install
 ## Vision
   - [x] Use libpst as code base.
   - [x] Code cleanup. Get rid of Python support - the binding should be implemented in another repo.
-  - [ ] Make API calls reentrant/thread safe.
+  - [x] Make API calls reentrant/thread safe.
   - [ ] Get rid of single purpose binaries (readpst, lspst, ...).
   - [ ] Make programmable abstraction over non-basic original binaries' functionality.
   - [ ] Make API integrable to other languages.

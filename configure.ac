@@ -1,5 +1,5 @@
 AC_PREREQ(2.60)
-AC_INIT(libpst,1.0.0,pavel.prochazka@spongedata.cz)
+AC_INIT(libpst,7.1.0,pavel.prochazka@spongedata.cz)
 AC_CONFIG_SRCDIR([src/libpst.c])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])

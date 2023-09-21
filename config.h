@@ -403,7 +403,7 @@
 #define PACKAGE_NAME "libpst"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libpst 1.0.0"
+#define PACKAGE_STRING "libpst 7.1.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libpst"
@@ -412,7 +412,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.0.0"
+#define PACKAGE_VERSION "7.1.0"
 
 /* Define if <inttypes.h> exists and defines unusable PRI* macros. */
 /* #undef PRI_MACROS_BROKEN */
@@ -491,7 +491,7 @@
 /* #undef USE_WIN32_THREADS */
 
 /* Version number of package */
-#define VERSION "1.0.0"
+#define VERSION "7.1.0"
 
 /* Enable large inode numbers on Mac OS X 10.5.  */
 #ifndef _DARWIN_USE_64_BIT_INODE
