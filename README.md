@@ -1,7 +1,7 @@
 # LibPST2 - fork of original libpst
 
 ## Originals
-(https://www.five-ten-sg.com/libpst/)[LibPST original web]
+[LibPST original web](https://www.five-ten-sg.com/libpst/)
 
 
 ## Build Process
@@ -13,6 +13,8 @@ make
 su
 make install
 ```
+
+**Note** - It may happen usage of ```autoreconf && autoupdate``` is needed if you use newer automake tools than original.
 
 ## Vision
   - [x] Use libpst as code base.
