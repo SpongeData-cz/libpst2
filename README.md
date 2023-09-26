@@ -14,6 +14,8 @@ su
 make install
 ```
 
+**Note** - It may happen usage of ```autoreconf && autoupdate``` is needed if you use newer automake tools than original.
+
 ## Vision
   - [x] Use libpst as code base.
   - [x] Code cleanup. Get rid of Python support - the binding should be implemented in another repo.
