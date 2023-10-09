@@ -6,8 +6,8 @@
 
 ## Build Process
 ```bash
-automake --add-missing
-autoconf
+automake --add-missing # optional - for developers
+autoconf # optional - for developers
 ./configure
 make
 su
