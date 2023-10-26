@@ -155,11 +155,18 @@ int record_enumerator_destroy(pst_record_enumerator * ie) {
         pst_record_destroy(*(lst++));
     }
 
-    pst_close(&ie->file);
+    if (ie->num_error == NO_ERROR)
+    {
+        pst_close(&ie->file);
+    }
+    /* else if error appears file is already closed */
+
     free(ie->items);
     ie->items = NULL;
     ie->d_ptr = NULL;
+
     free(ie);
+
     return 0;
 }
 
@@ -233,12 +240,12 @@ pst_folder * pst_folder_new(pst_record pr) {
 int pst_folder_to_file(pst_folder * self, pst_export *pe, int * error) {
     int ret = mkdir(self->r.renaming, 0700);
     *error = NO_ERROR;
-    
+
     if (ret != 0){
         *error = PST_MESSAGE_ERROR_FILE_ERROR;
         return 0;
     }
-    
+
     return 1; // unimplemented no reason - folder isnt file
 }
 
